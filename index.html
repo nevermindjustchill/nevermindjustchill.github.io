@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>无所谓开心就好 Nevermind Just Chill · 官网</title>
+<meta name="description" content="一档由两位留学生每周更新的播客，瞎聊大学生活，偶尔思考人生，反正每周都有点新鲜的。无所谓，开心就好！">
+<style>
+@font-face{
+  font-family:'BangBang';
+  src:url('assets/bangbangti.otf') format('opentype');
+  font-display:swap;
+}
+:root{
+  --yellow:#FFC300;
+  --yellow-deep:#F5A800;
+  --black:#141414;
+  --white:#FFFFFF;
+  --paper:#FFF9EA;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'BangBang','PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;
+  background:var(--yellow);
+  color:var(--black);
+  overflow-x:hidden;
+}
+::selection{background:var(--black);color:var(--yellow);}
+
+/* ---------- 导航 ---------- */
+nav{
+  position:sticky;top:0;z-index:40;
+  background:var(--yellow);
+  border-bottom:4px solid var(--black);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 24px;gap:12px;flex-wrap:wrap;
+}
+.nav-logo{display:flex;align-items:center;gap:10px;font-size:22px;text-decoration:none;color:var(--black);}
+.nav-logo img{width:44px;height:44px;border-radius:10px;border:3px solid var(--black);transition:transform .3s;}
+.nav-logo:hover img{transform:rotate(-12deg) scale(1.1);}
+.nav-links{display:flex;gap:6px;flex-wrap:wrap;}
+.nav-links a{
+  text-decoration:none;color:var(--black);font-size:17px;
+  padding:6px 14px;border:3px solid transparent;border-radius:999px;
+  transition:all .15s;
+}
+.nav-links a:hover{border-color:var(--black);background:var(--white);transform:translateY(-2px) rotate(-2deg);}
+
+/* ---------- Hero ---------- */
+.hero{
+  position:relative;
+  min-height:88vh;
+  display:flex;align-items:center;justify-content:center;
+  padding:60px 24px 100px;
+  background:
+    linear-gradient(115deg, transparent 0 55%, rgba(255,255,255,.9) 55.3% 100%),
+    var(--yellow);
+  overflow:hidden;
+}
+.hero-inner{
+  position:relative;z-index:2;
+  display:flex;align-items:center;gap:56px;
+  max-width:1100px;width:100%;
+  flex-wrap:wrap;justify-content:center;
+}
+.hero-cover{position:relative;flex:0 0 auto;}
+.hero-cover img{
+  width:min(360px,78vw);border-radius:24px;
+  border:5px solid var(--black);
+  box-shadow:12px 12px 0 var(--black);
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1), box-shadow .35s;
+  cursor:pointer;
+}
+.hero-cover img:hover{transform:rotate(-3deg) scale(1.03);box-shadow:16px 16px 0 var(--black);}
+.hero-cover .stamp{
+  position:absolute;top:-22px;right:-22px;
+  background:var(--white);border:4px solid var(--black);
+  border-radius:999px;padding:14px 12px;
+  font-size:16px;line-height:1.1;text-align:center;
+  transform:rotate(12deg);
+  animation:wiggle 3.2s ease-in-out infinite;
+}
+@keyframes wiggle{0%,100%{transform:rotate(9deg)}50%{transform:rotate(16deg)}}
+.hero-text{max-width:520px;}
+.hero-text h1{
+  font-size:clamp(44px,7vw,84px);
+  line-height:1.05;letter-spacing:2px;
+  text-shadow:4px 4px 0 var(--white);
+}
+.hero-text h1 .smile{display:inline-block;animation:bounce 2.4s ease-in-out infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px) rotate(10deg)}}
+.hero-en{
+  display:inline-block;margin-top:10px;
+  background:var(--black);color:var(--yellow);
+  padding:5px 16px;font-size:17px;letter-spacing:3px;
+  transform:rotate(-2deg);white-space:nowrap;
+}
+.hero-tag{margin-top:22px;font-size:19px;line-height:1.8;font-family:'PingFang SC','Hiragino Sans GB',sans-serif;}
+.hero-btns{margin-top:28px;display:flex;gap:14px;flex-wrap:wrap;}
+.btn{
+  font-family:inherit;font-size:19px;cursor:pointer;text-decoration:none;
+  padding:12px 26px;border-radius:999px;border:4px solid var(--black);
+  background:var(--black);color:var(--yellow);
+  box-shadow:5px 5px 0 rgba(20,20,20,.25);
+  transition:transform .15s, box-shadow .15s;
+  display:inline-flex;align-items:center;gap:8px;
+}
+.btn.ghost{background:var(--white);color:var(--black);}
+.btn:hover{transform:translate(-2px,-4px) rotate(-1deg);box-shadow:8px 9px 0 rgba(20,20,20,.3);}
+.btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 rgba(20,20,20,.3);}
+
+/* 大声公按钮 & 气泡 */
+.megaphone-btn{
+  position:absolute;left:4%;bottom:6%;z-index:5;
+  background:none;border:none;cursor:pointer;
+  font-size:64px;transform:scaleX(-1) rotate(8deg); /* 镜像翻转，喇叭口朝右上 */
+  transition:transform .2s;
+  filter:drop-shadow(4px 4px 0 rgba(20,20,20,.2));
+}
+.megaphone-btn:hover{transform:scaleX(-1) rotate(16deg) scale(1.15);}
+.megaphone-btn:active{transform:scaleX(-1) scale(.9);}
+.megaphone-hint{
+  position:absolute;left:calc(4% + 74px);bottom:calc(6% + 8px);z-index:5;
+  font-size:14px;background:var(--white);border:2px solid var(--black);
+  padding:4px 10px;border-radius:999px;transform:rotate(-4deg);
+  pointer-events:none;
+}
+.shout{
+  position:fixed;z-index:99;pointer-events:none;
+  background:var(--white);border:3px solid var(--black);
+  padding:10px 18px;border-radius:18px 18px 18px 4px;
+  font-size:18px;white-space:nowrap;
+  animation:shout 1.8s ease-out forwards;
+  box-shadow:4px 4px 0 rgba(20,20,20,.25);
+}
+@keyframes shout{
+  0%{opacity:0;transform:translateY(10px) scale(.6) rotate(-6deg);}
+  15%{opacity:1;transform:translateY(0) scale(1.05) rotate(2deg);}
+  70%{opacity:1;transform:translateY(-50px) rotate(-2deg);}
+  100%{opacity:0;transform:translateY(-90px) rotate(3deg);}
+}
+
+/* 可拖拽贴纸 */
+.sticker{
+  position:absolute;z-index:6;font-size:44px;cursor:grab;user-select:none;
+  filter:drop-shadow(3px 3px 0 rgba(20,20,20,.2));
+  transition:transform .2s;
+  touch-action:none;
+}
+.sticker:hover{transform:scale(1.2) rotate(8deg);}
+.sticker:active{cursor:grabbing;}
+
+/* ---------- 通用 section ---------- */
+section{padding:80px 24px;position:relative;}
+.wrap{max-width:1000px;margin:0 auto;}
+.sec-title{
+  font-size:clamp(32px,4.5vw,52px);
+  display:inline-block;position:relative;margin-bottom:36px;
+  letter-spacing:2px;
+}
+.sec-title::after{
+  content:'';position:absolute;left:0;bottom:6px;width:100%;height:14px;
+  background:var(--yellow);z-index:-1;transform:skewX(-12deg);
+}
+.sec-white{background:var(--white);border-top:4px solid var(--black);border-bottom:4px solid var(--black);}
+.sec-white .sec-title::after{background:var(--yellow);}
+.sec-yellow .sec-title::after{background:var(--white);}
+
+/* ---------- 播放器 ---------- */
+.player-tabs{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
+.ptab{
+  font-family:inherit;font-size:17px;cursor:pointer;
+  padding:8px 20px;border-radius:999px;border:3px solid var(--black);
+  background:var(--white);color:var(--black);transition:all .15s;
+}
+.ptab:hover{transform:translateY(-2px);}
+.ptab.active{background:var(--black);color:var(--yellow);transform:rotate(-2deg) scale(1.05);}
+.player-frame{
+  border:4px solid var(--black);border-radius:20px;overflow:hidden;
+  background:var(--paper);box-shadow:10px 10px 0 rgba(20,20,20,.9);
+}
+.player-frame iframe{display:block;width:100%;border:0;}
+.player-note{
+  margin-top:22px;
+  display:inline-flex;align-items:center;gap:16px;flex-wrap:wrap;
+  background:var(--paper);border:3px solid var(--black);border-radius:16px;
+  padding:14px 20px;
+  box-shadow:6px 6px 0 rgba(20,20,20,.85);
+  transform:rotate(-.4deg);
+}
+.player-note .note-text{font-size:19px;letter-spacing:1px;line-height:1.6;}
+.player-note .mini-btn{
+  font-family:inherit;font-size:16px;text-decoration:none;cursor:pointer;
+  background:var(--black);color:var(--yellow);
+  padding:8px 18px;border-radius:999px;white-space:nowrap;
+  transition:transform .15s;display:inline-flex;align-items:center;gap:6px;
+}
+.player-note .mini-btn:hover{transform:scale(1.06) rotate(-2deg);}
+
+/* ---------- 往期列表 ---------- */
+.ep-list{display:flex;flex-direction:column;gap:22px;}
+.ep-card.ep-hidden{display:none;}
+.ep-expand{margin-top:24px;text-align:center;}
+.ep-expand .btn .arrow{display:inline-block;transition:transform .3s;}
+.ep-expand.open .btn .arrow{transform:rotate(180deg);}
+.ep-loading{
+  font-size:18px;letter-spacing:1px;text-align:center;padding:30px 0;
+  animation:pulse 1.2s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:.35}50%{opacity:.9}}
+.ep-card{
+  background:var(--white);border:4px solid var(--black);border-radius:18px;
+  box-shadow:8px 8px 0 var(--black);
+  transition:transform .2s, box-shadow .2s;
+  overflow:hidden;
+}
+.ep-card:nth-child(odd){transform:rotate(.5deg);}
+.ep-card:nth-child(even){transform:rotate(-.5deg);}
+.ep-card:hover{transform:rotate(0) translateY(-4px);box-shadow:10px 12px 0 var(--black);}
+.ep-head{
+  width:100%;text-align:left;background:none;border:none;cursor:pointer;
+  font-family:inherit;color:var(--black);
+  display:flex;align-items:center;gap:16px;padding:20px 22px;
+}
+.ep-num{
+  flex:0 0 auto;background:var(--yellow);border:3px solid var(--black);
+  border-radius:12px;padding:8px 12px;font-size:18px;white-space:nowrap;
+  transform:rotate(-4deg);
+}
+.ep-title{font-size:20px;line-height:1.4;flex:1;}
+.ep-date{
+  flex:0 0 auto;font-size:13px;opacity:.55;
+  font-family:'PingFang SC',sans-serif;white-space:nowrap;
+}
+.ep-toggle{font-size:26px;transition:transform .3s;flex:0 0 auto;}
+.ep-card.open .ep-toggle{transform:rotate(45deg);}
+.ep-notes{
+  max-height:0;overflow:hidden;transition:max-height .45s ease;
+  font-family:'PingFang SC','Hiragino Sans GB',sans-serif;
+}
+.ep-notes-inner{
+  padding:0 24px 24px;font-size:16px;line-height:1.9;
+  border-top:3px dashed var(--black);margin:0 22px;padding-top:16px;
+  white-space:pre-line;
+}
+.ep-notes-inner .ep-link{
+  display:inline-block;margin-top:14px;
+  font-family:'BangBang','PingFang SC',sans-serif;font-size:16px;
+  color:var(--black);text-decoration:none;
+  background:var(--yellow);border:2px solid var(--black);border-radius:999px;
+  padding:5px 16px;transition:transform .15s;
+}
+.ep-notes-inner .ep-link:hover{transform:scale(1.05) rotate(-1deg);}
+.ep-empty{opacity:.6;font-style:italic;}
+.more-eps{margin-top:30px;text-align:center;}
+
+/* ---------- 关于 ---------- */
+.about-intro{font-size:18px;line-height:2;font-family:'PingFang SC',sans-serif;max-width:720px;margin-bottom:44px;}
+.hosts{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:28px;}
+.host-card{
+  background:var(--yellow);border:4px solid var(--black);border-radius:20px;
+  padding:28px;box-shadow:8px 8px 0 var(--black);
+  transition:transform .25s;
+  position:relative;
+}
+.host-card:hover{transform:translateY(-6px) rotate(-1deg);}
+.host-avatar{
+  width:96px;height:96px;border-radius:50%;
+  background:var(--white);border:4px solid var(--black);
+  display:flex;align-items:center;justify-content:center;
+  font-size:44px;margin-bottom:16px;
+}
+.host-card h3{font-size:28px;margin-bottom:8px;}
+.host-card .host-tag{
+  display:inline-block;background:var(--black);color:var(--yellow);
+  font-size:14px;padding:3px 12px;border-radius:999px;margin-bottom:14px;
+}
+.host-card p{font-family:'PingFang SC',sans-serif;font-size:15px;line-height:1.9;}
+.host-card p + p{margin-top:10px;}
+
+/* ---------- 平台 ---------- */
+.platforms{display:flex;flex-wrap:wrap;justify-content:center;gap:18px;}
+.plat{
+  flex:1 1 150px;min-width:max-content;max-width:280px;
+  display:flex;align-items:center;justify-content:center;gap:12px;
+  background:var(--white);border:4px solid var(--black);border-radius:16px;
+  padding:16px 20px;text-decoration:none;color:var(--black);
+  font-size:19px;box-shadow:6px 6px 0 rgba(20,20,20,.85);
+  transition:transform .15s, box-shadow .15s, background .15s;
+  white-space:nowrap;
+}
+.plat:hover{transform:translate(-2px,-4px) rotate(-1deg);box-shadow:9px 10px 0 rgba(20,20,20,.85);background:var(--paper);}
+.plat .ico{font-size:26px;}
+.plat small{display:block;font-size:12px;opacity:.6;font-family:'PingFang SC',sans-serif;}
+.clips-bar{
+  margin-top:26px;
+  display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;
+  background:var(--white);border:3px solid var(--black);border-radius:16px;
+  padding:16px 22px;transform:rotate(-.5deg);
+  box-shadow:6px 6px 0 rgba(20,20,20,.85);
+}
+.clips-bar .clips-text{font-size:17px;letter-spacing:1px;line-height:1.7;flex:1 1 340px;}
+.clips-btns{display:flex;gap:10px;flex-wrap:wrap;}
+.clips-btns a{
+  font-family:inherit;font-size:15px;text-decoration:none;
+  background:var(--black);color:var(--yellow);
+  padding:8px 16px;border-radius:999px;white-space:nowrap;
+  display:inline-flex;align-items:center;gap:6px;
+  transition:transform .15s;
+}
+.clips-btns a:hover{transform:scale(1.07) rotate(-2deg);}
+
+/* ---------- 联系 ---------- */
+.contact-box{
+  background:var(--black);color:var(--yellow);
+  border-radius:24px;padding:48px 32px;text-align:center;
+  box-shadow:10px 10px 0 rgba(20,20,20,.3);
+}
+.contact-box h2{font-size:clamp(28px,4vw,44px);margin-bottom:16px;}
+.contact-box p{font-family:'PingFang SC',sans-serif;font-size:16px;line-height:1.9;opacity:.9;}
+.contact-box .btn{margin-top:24px;background:var(--yellow);color:var(--black);border-color:var(--yellow);font-size:17px;}
+
+/* ---------- footer ---------- */
+footer{
+  background:var(--black);color:var(--yellow);
+  text-align:center;padding:36px 20px;font-size:15px;
+}
+footer .foot-smile{font-size:28px;display:inline-block;animation:bounce 2.4s infinite;}
+footer p{margin-top:8px;font-family:'PingFang SC',sans-serif;opacity:.7;font-size:13px;}
+footer p a{color:var(--yellow);opacity:.85;}
+
+@media (max-width:760px){
+  nav{position:static;padding:10px 14px;}
+  .nav-links a{font-size:14px;padding:4px 8px;}
+  .nav-logo{font-size:18px;}
+  .nav-logo img{width:34px;height:34px;}
+}
+@media (max-width:640px){
+  .hero{min-height:auto;padding-bottom:120px;}
+  .hero-inner{gap:32px;}
+  .hero-en{font-size:14px;letter-spacing:2px;}
+  .megaphone-btn{font-size:48px;}
+  section{padding:56px 18px;}
+  .ep-title{font-size:17px;}
+  .ep-date{display:none;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#top"><img src="assets/cover.png" alt="无所谓开心就好 logo">无所谓开心就好</a>
+  <div class="nav-links">
+    <a href="#listen">🎧 在线听</a>
+    <a href="#episodes">📼 往期</a>
+    <a href="#about">👋 关于</a>
+    <a href="#platforms">🚀 各平台</a>
+    <a href="#contact">✉️ 联系</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero-inner">
+    <div class="hero-cover">
+      <img src="assets/cover.png" alt="无所谓开心就好 播客封面" id="coverImg">
+      <div class="stamp">每周<br>更新!</div>
+    </div>
+    <div class="hero-text">
+      <h1>无所谓<br>开<span class="smile">心</span>就好</h1>
+      <span class="hero-en">NEVERMIND JUST CHILL</span>
+      <p class="hero-tag">一档由两位留学生每周更新的播客。<br>瞎聊大学生活，偶尔思考人生，<br>反正每周都有点新鲜的。</p>
+      <div class="hero-btns">
+        <a class="btn" href="#listen">▶ 立刻开听</a>
+        <a class="btn ghost" href="#platforms">去订阅 →</a>
+      </div>
+    </div>
+  </div>
+  <button class="megaphone-btn" id="megaphone" aria-label="点我喊话">📢</button>
+  <span class="megaphone-hint">戳我喊两句！</span>
+  <span class="sticker" style="top:12%;right:8%;">⭐</span>
+  <span class="sticker" style="bottom:20%;right:16%;">🎙️</span>
+  <span class="sticker" style="top:18%;left:6%;">😆</span>
+</header>
+
+<section class="sec-white" id="listen">
+  <div class="wrap">
+    <h2 class="sec-title">🎧 最新一期，直接开听</h2>
+    <div class="player-tabs" role="tablist">
+      <button class="ptab active" data-src="https://open.spotify.com/embed/show/4DfS8z9w2dg9NXvw4rAwvB?utm_source=generator&theme=0" data-h="352">Spotify</button>
+      <button class="ptab" id="appleTab" data-src="https://embed.podcasts.apple.com/cn/podcast/id1731772575" data-h="450">Apple Podcasts</button>
+    </div>
+    <div class="player-frame">
+      <iframe id="playerFrame" src="https://open.spotify.com/embed/show/4DfS8z9w2dg9NXvw4rAwvB?utm_source=generator&theme=0" height="352" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" title="播客播放器"></iframe>
+    </div>
+    <div class="player-note">
+      <span class="note-text">💡 播放器自动展示最新一集；国内的朋友直接戳这里 👉</span>
+      <a class="mini-btn" href="https://www.xiaoyuzhoufm.com/podcast/65bf412fa34d82a6cf7c3a6b" target="_blank" rel="noopener">🪐 去小宇宙收听 →</a>
+    </div>
+  </div>
+</section>
+
+<section class="sec-yellow" id="episodes">
+  <div class="wrap">
+    <h2 class="sec-title">📼 往期节目 & Show Notes</h2>
+    <div class="ep-list" id="epList"><div class="ep-loading">📡 正在从电波里捞最新节目……</div></div>
+    <div class="ep-expand" id="epExpand" hidden>
+      <button class="btn ghost" id="epExpandBtn"><span class="arrow">▼</span> 再展开 5 期</button>
+    </div>
+    <div class="more-eps">
+      <a class="btn" href="https://www.xiaoyuzhoufm.com/podcast/65bf412fa34d82a6cf7c3a6b" target="_blank" rel="noopener">在小宇宙看全部往期 →</a>
+    </div>
+  </div>
+</section>
+
+<section class="sec-white" id="about">
+  <div class="wrap">
+    <h2 class="sec-title">👋 关于我们</h2>
+    <p class="about-intro">「无所谓开心就好」是一档由两位留学生拿铁和三无主播的生活闲聊类播客。<br>瞎聊大学生活，偶尔思考人生，反正每周都有点新鲜的。<br><b>无所谓，开心就好！</b></p>
+    <div class="hosts">
+      <div class="host-card">
+        <div class="host-avatar">☕</div>
+        <h3>拿铁</h3>
+        <span class="host-tag">主播 · Host</span>
+        <p>你好呀，我是拿铁☕️！很高兴遇见你～</p>
+        <p>我喜欢给别人带来欢乐。我喜欢喜剧，喜欢脱口秀，在一群人中也常常是那个逗笑别人的人。</p>
+        <p>如果早上有时间，我都会给自己做一杯咖啡，因为我很喜欢喝咖啡。我最喜欢喝的咖啡类型是拿铁，但我也在探索咖啡的多种形式，最近在尝试喝冷萃和 Shaken Espresso。</p>
+        <p>我是一个很喜欢去线下看演出的人。我会在无聊的时候搜索自己所在城市周边有什么音乐剧、脱口秀专场，或者电影正在放映，然后去看。我很喜欢任何体验类项目，比如说主题乐园。</p>
+        <p>我很喜欢买零食，但经常都吃不完。</p>
+        <p>我很喜欢分享，比如和朋友煲电话粥或者发小红书。这也是为什么有这档播客的原因～</p>
+      </div>
+      <div class="host-card">
+        <div class="host-avatar">🧋</div>
+        <h3>三无</h3>
+        <span class="host-tag">主播 · Host</span>
+        <p>Hiiii，我是三无！</p>
+        <p>希望我的生活里无烦恼，无三高，无坏蛋。</p>
+        <p>我有几个朴实无华的爱好：</p>
+        <p>我喜欢吃，所以体重一直只增不降，减脂计划没执行过因为实在舍不得好吃的。</p>
+        <p>我喜欢旅游，一提起订酒店订机票我就来劲。</p>
+        <p>我喜欢追剧，吃饭没剧看就不香了，要帅哥美女多的那种，但我受不了充斥令人脚趾抠地演技的无脑偶像剧。</p>
+        <p>我喜欢 vibe code，因为我只会想不会码，看到想法落地的时候还是很美妙的。</p>
+        <p>我喜欢讲故事，所以有了这档播客呀～</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec-yellow" id="platforms">
+  <div class="wrap">
+    <h2 class="sec-title">🚀 在这些地方找到我们</h2>
+    <div class="platforms">
+      <a class="plat" href="https://www.xiaoyuzhoufm.com/podcast/65bf412fa34d82a6cf7c3a6b" target="_blank" rel="noopener"><span class="ico">🪐</span><span>小宇宙</span></a>
+      <a class="plat" href="https://podcasts.apple.com/cn/podcast/id1731772575" target="_blank" rel="noopener"><span class="ico">🍎</span><span>Apple Podcasts</span></a>
+      <a class="plat" href="https://open.spotify.com/show/4DfS8z9w2dg9NXvw4rAwvB" target="_blank" rel="noopener"><span class="ico">🟢</span><span>Spotify</span></a>
+      <a class="plat" href="https://music.163.com/#/radio?app_&id=1000684568" target="_blank" rel="noopener"><span class="ico">☁️</span><span>网易云音乐</span></a>
+      <a class="plat" href="https://www.ximalaya.com/album/89021839" target="_blank" rel="noopener"><span class="ico">🏔️</span><span>喜马拉雅</span></a>
+    </div>
+    <div class="clips-bar">
+      <p class="clips-text">✂️ B 站和 YouTube 上还有我们的整集和精彩切片 Clips，刷起来更上头！</p>
+      <div class="clips-btns">
+        <a href="https://youtube.com/@nevermindjustchill" target="_blank" rel="noopener">▶️ YouTube</a>
+        <a href="https://space.bilibili.com/3546695686163303" target="_blank" rel="noopener">📺 哔哩哔哩</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec-white" id="contact">
+  <div class="wrap">
+    <div class="contact-box">
+      <h2>联系 / 合作 📬</h2>
+      <p>商务合作、话题投稿、或者单纯想跟我们唠两句 —— 都欢迎！<br>也可以在各平台评论区直接留言。</p>
+      <a class="btn" href="mailto:chillnevermind+website@gmail.com">✉️ 给我们写邮件</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="foot-smile">😊</span>
+  <div>无所谓，开心就好！</div>
+  <p>© 2026 无所谓开心就好 Nevermind Just Chill · 每周更新的留学生闲聊播客</p>
+</footer>
+
+<script>
+/* ---------- 大声公喊话 ---------- */
+const quotes = [
+  '无所谓，开心就好！',
+  '瞎聊大学生活，偶尔思考人生',
+  '锐评较多，轻喷 🙏',
+  '反正每周都有点新鲜的！',
+  '快去订阅！',
+  '不多说了，去听播客！'
+];
+const mega = document.getElementById('megaphone');
+let lastQuote = -1;
+mega.addEventListener('click', e => {
+  const b = document.createElement('div');
+  b.className = 'shout';
+  // 随机但不和上一句重复（允许 ABA，不允许 AAB）
+  let i = Math.floor(Math.random() * quotes.length);
+  if (i === lastQuote) i = (i + 1 + Math.floor(Math.random() * (quotes.length - 1))) % quotes.length;
+  lastQuote = i;
+  b.textContent = quotes[i];
+  const r = mega.getBoundingClientRect();
+  b.style.left = Math.min(r.right + 6, window.innerWidth - 260) + 'px';
+  b.style.top = (r.top - 30 - Math.random() * 40) + 'px';
+  document.body.appendChild(b);
+  setTimeout(() => b.remove(), 1900);
+});
+
+/* ---------- 封面点击彩蛋：转圈 ---------- */
+const cover = document.getElementById('coverImg');
+cover.addEventListener('click', () => {
+  cover.style.transition = 'transform .8s cubic-bezier(.34,1.56,.64,1)';
+  cover.style.transform = 'rotate(' + (Math.random() > .5 ? 360 : -360) + 'deg) scale(1.05)';
+  setTimeout(() => { cover.style.transform = ''; }, 850);
+});
+
+/* ---------- 贴纸拖拽 ---------- */
+document.querySelectorAll('.sticker').forEach(s => {
+  s.addEventListener('pointerdown', e => {
+    e.preventDefault();
+    s.setPointerCapture(e.pointerId);
+    const parent = s.offsetParent.getBoundingClientRect();
+    const move = ev => {
+      s.style.left = (ev.clientX - parent.left - 22) + 'px';
+      s.style.top = (ev.clientY - parent.top - 22) + 'px';
+      s.style.right = 'auto'; s.style.bottom = 'auto';
+    };
+    const up = () => { s.removeEventListener('pointermove', move); s.removeEventListener('pointerup', up); };
+    s.addEventListener('pointermove', move);
+    s.addEventListener('pointerup', up);
+  });
+});
+
+/* ---------- 播放器切换 ---------- */
+const frame = document.getElementById('playerFrame');
+document.querySelectorAll('.ptab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.ptab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    frame.src = t.dataset.src;
+    frame.height = t.dataset.h;
+  });
+});
+
+/* ==========================================================
+   往期节目：自动从官方 RSS 抓取（无需手动更新）
+   RSS 源 = 小宇宙官方 feed，节目一更新这里就自动跟着更新。
+   线路 1：rss2json（转成 JSON，最新 10 集）
+   线路 2：allorigins 代理直读 XML
+   两条线路都挂了 → 显示内置的备用列表
+   ========================================================== */
+const FEED_URL = 'https://feed.xyzfm.space/ckayfxcrmfak';
+const XYZ_URL = 'https://www.xiaoyuzhoufm.com/podcast/65bf412fa34d82a6cf7c3a6b';
+const MAX_EPS = 8;      // 共抓 8 期
+const VISIBLE_EPS = 3;  // 默认露出 3 期，其余折叠
+
+const fallbackEpisodes = [
+  { num: 'EP 71', title: '六一儿童节被认成阿姨，00后的我没招了', notes: null, link: XYZ_URL, date: '' },
+  { num: 'EP 70', title: '这不吃那不吃的，你们美国人都不许聚餐了！', notes: null, link: XYZ_URL, date: '' },
+  { num: 'EP 69', title: '太正常的我不爱，雷点才是爽点', notes: null, link: XYZ_URL, date: '' }
+];
+
+function parseEpisode(rawTitle, rawDescHTML, link, pubDate) {
+  // rss2json 返回的标题是 HTML 转义过的（如 &amp;），先解码
+  const title = (new DOMParser().parseFromString(rawTitle || '', 'text/html').body.textContent || '').trim();
+  let num = 'EP', name = title;
+  const m = title.match(/^(EP[^｜|]*?)\s*[｜|]\s*(.+)$/i);
+  if (m) { num = m[1].trim(); name = m[2].trim(); }
+
+  // 去掉每集末尾固定的"本档播客可以在……"宣传文案
+  let html = (rawDescHTML || '').replace(/<br\s*\/?>/gi, '¶'); // <br> 先换成换行标记
+  for (const marker of ['————', '本档播客可以在']) {
+    const i = html.indexOf(marker);
+    if (i > -1) html = html.slice(0, i);
+  }
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  // 去掉小宇宙自动追加的"查看完整简介 / 查看文稿"链接
+  doc.querySelectorAll('a').forEach(a => { if (a.textContent.includes('小宇宙')) a.remove(); });
+  const blocks = [...doc.querySelectorAll('p, li')];
+  const rawLines = blocks.length
+    ? blocks.flatMap(el => (el.tagName === 'LI' ? '• ' + el.textContent : el.textContent).split('¶'))
+    : doc.body.textContent.split('¶');
+  const notes = rawLines
+    .map(l => l.trim().replace(/^\*\s*/, '• '))
+    .filter(Boolean)
+    .join('\n') || null;
+
+  const d = pubDate ? new Date(pubDate) : null;
+  const date = d && !isNaN(d)
+    ? d.getFullYear() + '.' + String(d.getMonth() + 1).padStart(2, '0') + '.' + String(d.getDate()).padStart(2, '0')
+    : '';
+  return { num, title: name, notes, link: (link || XYZ_URL).split('?')[0], date };
+}
+
+async function fetchViaRss2json() {
+  const r = await fetch('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(FEED_URL));
+  const d = await r.json();
+  if (d.status !== 'ok' || !d.items || !d.items.length) throw new Error('rss2json failed');
+  return d.items.slice(0, MAX_EPS).map(it => parseEpisode(it.title, it.description, it.link, it.pubDate));
+}
+
+async function fetchViaProxy() {
+  const r = await fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent(FEED_URL));
+  const xml = new DOMParser().parseFromString(await r.text(), 'text/xml');
+  const items = [...xml.querySelectorAll('item')];
+  if (!items.length) throw new Error('proxy feed empty');
+  return items.slice(0, MAX_EPS).map(it => parseEpisode(
+    it.querySelector('title')?.textContent,
+    it.querySelector('description')?.textContent,
+    it.querySelector('link')?.textContent,
+    it.querySelector('pubDate')?.textContent
+  ));
+}
+
+function renderEpisodes(eps, isLive) {
+  const epList = document.getElementById('epList');
+  epList.innerHTML = '';
+  eps.forEach((ep, idx) => {
+    const card = document.createElement('div');
+    card.className = 'ep-card' + (idx >= VISIBLE_EPS ? ' ep-hidden' : '');
+
+    const head = document.createElement('button');
+    head.className = 'ep-head';
+    head.setAttribute('aria-expanded', 'false');
+    const numEl = document.createElement('span'); numEl.className = 'ep-num'; numEl.textContent = ep.num;
+    const titleEl = document.createElement('span'); titleEl.className = 'ep-title'; titleEl.textContent = ep.title;
+    const dateEl = document.createElement('span'); dateEl.className = 'ep-date'; dateEl.textContent = ep.date;
+    const toggleEl = document.createElement('span'); toggleEl.className = 'ep-toggle'; toggleEl.textContent = '＋';
+    head.append(numEl, titleEl, dateEl, toggleEl);
+
+    const notesWrap = document.createElement('div'); notesWrap.className = 'ep-notes';
+    const inner = document.createElement('div'); inner.className = 'ep-notes-inner';
+    if (ep.notes) {
+      inner.textContent = ep.notes;
+    } else {
+      const empty = document.createElement('span');
+      empty.className = 'ep-empty';
+      empty.textContent = '这期偷懒没写 shownotes，直接点开听吧 🙈';
+      inner.appendChild(empty);
+    }
+    const epLink = document.createElement('a');
+    epLink.className = 'ep-link'; epLink.href = ep.link; epLink.target = '_blank'; epLink.rel = 'noopener';
+    epLink.textContent = '🪐 去小宇宙听这期 →';
+    inner.appendChild(document.createElement('br'));
+    inner.appendChild(epLink);
+    notesWrap.appendChild(inner);
+
+    head.addEventListener('click', () => {
+      const open = card.classList.toggle('open');
+      head.setAttribute('aria-expanded', open);
+      notesWrap.style.maxHeight = open ? notesWrap.scrollHeight + 'px' : '0';
+    });
+
+    card.append(head, notesWrap);
+    epList.appendChild(card);
+  });
+  if (!isLive) {
+    const tip = document.createElement('p');
+    tip.style.cssText = 'margin-top:16px;font-size:14px;opacity:.6;font-family:PingFang SC,sans-serif;';
+    tip.textContent = '⚠️ 实时节目列表加载失败（可能是网络原因），以上为备用列表，完整往期请戳下方按钮。';
+    epList.appendChild(tip);
+  }
+
+  // 超出 3 期的部分折叠，用按钮展开/收起
+  const expand = document.getElementById('epExpand');
+  const expandBtn = document.getElementById('epExpandBtn');
+  const hiddenCount = eps.length - VISIBLE_EPS;
+  if (hiddenCount > 0) {
+    expand.hidden = false;
+    expandBtn.onclick = () => {
+      const open = expand.classList.toggle('open');
+      epList.querySelectorAll('.ep-card').forEach((c, i) => {
+        if (i >= VISIBLE_EPS) c.classList.toggle('ep-hidden', !open);
+      });
+      expandBtn.innerHTML = open
+        ? '<span class="arrow">▼</span> 收起'
+        : '<span class="arrow">▼</span> 再展开 ' + hiddenCount + ' 期';
+    };
+    expandBtn.innerHTML = '<span class="arrow">▼</span> 再展开 ' + hiddenCount + ' 期';
+  } else {
+    expand.hidden = true;
+  }
+}
+
+/* ---------- Apple 播放器：自动锁定最新一集 ---------- */
+(async () => {
+  try {
+    const r = await fetch('https://itunes.apple.com/lookup?id=1731772575&entity=podcastEpisode&limit=1');
+    const d = await r.json();
+    const ep = (d.results || []).find(x => x.kind === 'podcast-episode');
+    if (!ep) return;
+    const tab = document.getElementById('appleTab');
+    tab.dataset.src = 'https://embed.podcasts.apple.com/cn/podcast/id1731772575?i=' + ep.trackId;
+    tab.dataset.h = 175;
+    if (tab.classList.contains('active')) {
+      frame.src = tab.dataset.src;
+      frame.height = tab.dataset.h;
+    }
+  } catch (e) { /* 查询失败就保持整个节目的嵌入 */ }
+})();
+
+(async () => {
+  const CACHE_KEY = 'nvm_episodes_v1';
+  let eps = null;
+  try { eps = await fetchViaRss2json(); }
+  catch (e1) { try { eps = await fetchViaProxy(); } catch (e2) {} }
+
+  if (eps) {
+    renderEpisodes(eps, true);
+    try { localStorage.setItem(CACHE_KEY, JSON.stringify(eps)); } catch (e) {}
+  } else {
+    // 两条线路都失败：先用上次成功抓到的缓存，再不行才用内置备用列表
+    let cached = null;
+    try { cached = JSON.parse(localStorage.getItem(CACHE_KEY)); } catch (e) {}
+    if (cached && cached.length) renderEpisodes(cached, true);
+    else renderEpisodes(fallbackEpisodes, false);
+  }
+})();
+</script>
+</body>
+</html>
