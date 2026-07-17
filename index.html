@@ -181,22 +181,27 @@ section{padding:80px 24px;position:relative;}
   background:var(--paper);box-shadow:10px 10px 0 rgba(20,20,20,.9);
 }
 .player-frame iframe{display:block;width:100%;border:0;}
-.player-note{
-  margin-top:22px;
-  display:inline-flex;align-items:center;gap:16px;flex-wrap:wrap;
-  background:var(--paper);border:3px solid var(--black);border-radius:16px;
-  padding:14px 20px;
-  box-shadow:6px 6px 0 rgba(20,20,20,.85);
-  transform:rotate(-.4deg);
-}
-.player-note .note-text{font-size:19px;letter-spacing:1px;line-height:1.6;}
-.player-note .mini-btn{
+.player-frame iframe[hidden],.player-frame #xyzPlayer[hidden]{display:none;}
+.player-after{margin-top:18px;display:flex;justify-content:flex-start;}
+.mini-btn{
   font-family:inherit;font-size:16px;text-decoration:none;cursor:pointer;
   background:var(--black);color:var(--yellow);
   padding:8px 18px;border-radius:999px;white-space:nowrap;
   transition:transform .15s;display:inline-flex;align-items:center;gap:6px;
 }
-.player-note .mini-btn:hover{transform:scale(1.06) rotate(-2deg);}
+.mini-btn:hover{transform:scale(1.06) rotate(-2deg);}
+
+/* ---------- 小宇宙自制播放器 ---------- */
+.xyz-player{padding:22px;display:flex;flex-direction:column;gap:16px;}
+.xyz-top{display:flex;align-items:center;gap:16px;}
+.xyz-top img{
+  width:78px;height:78px;flex:0 0 auto;object-fit:cover;
+  border-radius:14px;border:3px solid var(--black);background:var(--white);
+}
+.xyz-eptitle{font-size:20px;line-height:1.45;}
+.xyz-date{margin-top:6px;font-size:13px;opacity:.55;font-family:'PingFang SC',sans-serif;}
+.xyz-player audio{width:100%;}
+.xyz-fallback{padding:30px 22px;text-align:center;font-size:17px;line-height:1.8;}
 
 /* ---------- 往期列表 ---------- */
 .ep-list{display:flex;flex-direction:column;gap:22px;}
@@ -210,7 +215,7 @@ section{padding:80px 24px;position:relative;}
 }
 @keyframes pulse{0%,100%{opacity:.35}50%{opacity:.9}}
 .ep-card{
-  background:var(--white);border:4px solid var(--black);border-radius:18px;
+  background:var(--paper);border:4px solid var(--black);border-radius:18px;
   box-shadow:8px 8px 0 var(--black);
   transition:transform .2s, box-shadow .2s;
   overflow:hidden;
@@ -259,7 +264,7 @@ section{padding:80px 24px;position:relative;}
 .about-intro{font-size:18px;line-height:2;font-family:'PingFang SC',sans-serif;max-width:720px;margin-bottom:44px;}
 .hosts{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:28px;}
 .host-card{
-  background:var(--yellow);border:4px solid var(--black);border-radius:20px;
+  background:var(--white);border:4px solid var(--black);border-radius:20px;
   padding:28px;box-shadow:8px 8px 0 var(--black);
   transition:transform .25s;
   position:relative;
@@ -267,7 +272,7 @@ section{padding:80px 24px;position:relative;}
 .host-card:hover{transform:translateY(-6px) rotate(-1deg);}
 .host-avatar{
   width:96px;height:96px;border-radius:50%;
-  background:var(--white);border:4px solid var(--black);
+  background:var(--yellow);border:4px solid var(--black);
   display:flex;align-items:center;justify-content:center;
   font-size:44px;margin-bottom:16px;
 }
@@ -284,19 +289,19 @@ section{padding:80px 24px;position:relative;}
 .plat{
   flex:1 1 150px;min-width:max-content;max-width:280px;
   display:flex;align-items:center;justify-content:center;gap:12px;
-  background:var(--white);border:4px solid var(--black);border-radius:16px;
+  background:var(--paper);border:4px solid var(--black);border-radius:16px;
   padding:16px 20px;text-decoration:none;color:var(--black);
   font-size:19px;box-shadow:6px 6px 0 rgba(20,20,20,.85);
   transition:transform .15s, box-shadow .15s, background .15s;
   white-space:nowrap;
 }
-.plat:hover{transform:translate(-2px,-4px) rotate(-1deg);box-shadow:9px 10px 0 rgba(20,20,20,.85);background:var(--paper);}
+.plat:hover{transform:translate(-2px,-4px) rotate(-1deg);box-shadow:9px 10px 0 rgba(20,20,20,.85);background:var(--yellow);}
 .plat .ico{font-size:26px;}
 .plat small{display:block;font-size:12px;opacity:.6;font-family:'PingFang SC',sans-serif;}
 .clips-bar{
   margin-top:26px;
   display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;
-  background:var(--white);border:3px solid var(--black);border-radius:16px;
+  background:var(--paper);border:3px solid var(--black);border-radius:16px;
   padding:16px 22px;transform:rotate(-.5deg);
   box-shadow:6px 6px 0 rgba(20,20,20,.85);
 }
@@ -337,13 +342,41 @@ footer p a{color:var(--yellow);opacity:.85;}
   .nav-logo img{width:34px;height:34px;}
 }
 @media (max-width:640px){
-  .hero{min-height:auto;padding-bottom:120px;}
+  .hero{min-height:auto;padding-bottom:110px;}
   .hero-inner{gap:32px;}
   .hero-en{font-size:14px;letter-spacing:2px;}
   .megaphone-btn{font-size:48px;}
   section{padding:56px 18px;}
   .ep-title{font-size:17px;}
   .ep-date{display:none;}
+
+  /* 贴纸手机上容易乱飘，直接隐藏 */
+  .sticker{display:none;}
+  .hero-cover .stamp{
+    top:-14px;right:-10px;
+    font-size:13px;padding:10px 9px;border-width:3px;
+  }
+
+  /* 标题一行放得下，避免下划线断行错位 */
+  .sec-title{font-size:clamp(22px,6.8vw,30px);letter-spacing:1px;}
+
+  /* 平台按钮：两列小卡片，小宇宙占整行 */
+  .platforms{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .plat{
+    min-width:0;max-width:none;
+    font-size:15px;padding:12px 8px;gap:8px;
+    box-shadow:4px 4px 0 rgba(20,20,20,.85);
+  }
+  .plat .ico{font-size:20px;}
+  .plat:first-child{grid-column:1 / -1;}
+
+  /* clips 提示条：字号收一收，换行更自然 */
+  .clips-bar{padding:14px 16px;gap:12px;}
+  .clips-bar .clips-text{font-size:15px;letter-spacing:0;line-height:1.7;}
+
+  .xyz-player{padding:16px;gap:14px;}
+  .xyz-top img{width:60px;height:60px;}
+  .xyz-eptitle{font-size:17px;}
 }
 </style>
 </head>
@@ -352,10 +385,10 @@ footer p a{color:var(--yellow);opacity:.85;}
 <nav>
   <a class="nav-logo" href="#top"><img src="assets/cover.png" alt="无所谓开心就好 logo">无所谓开心就好</a>
   <div class="nav-links">
+    <a href="#platforms">🚀 在哪听</a>
     <a href="#listen">🎧 在线听</a>
     <a href="#episodes">📼 往期</a>
     <a href="#about">👋 关于</a>
-    <a href="#platforms">🚀 各平台</a>
     <a href="#contact">✉️ 联系</a>
   </div>
 </nav>
@@ -383,24 +416,45 @@ footer p a{color:var(--yellow);opacity:.85;}
   <span class="sticker" style="top:18%;left:6%;">😆</span>
 </header>
 
-<section class="sec-white" id="listen">
+<section class="sec-white" id="platforms">
   <div class="wrap">
-    <h2 class="sec-title">🎧 最新一期，直接开听</h2>
-    <div class="player-tabs" role="tablist">
-      <button class="ptab active" data-src="https://open.spotify.com/embed/show/4DfS8z9w2dg9NXvw4rAwvB?utm_source=generator&theme=0" data-h="352">Spotify</button>
-      <button class="ptab" id="appleTab" data-src="https://embed.podcasts.apple.com/cn/podcast/id1731772575" data-h="450">Apple Podcasts</button>
+    <h2 class="sec-title">🚀 在哪听我们</h2>
+    <div class="platforms">
+      <a class="plat" href="https://www.xiaoyuzhoufm.com/podcast/65bf412fa34d82a6cf7c3a6b" target="_blank" rel="noopener"><span class="ico">🪐</span><span>小宇宙</span></a>
+      <a class="plat" href="https://podcasts.apple.com/cn/podcast/id1731772575" target="_blank" rel="noopener"><span class="ico">🍎</span><span>Apple Podcasts</span></a>
+      <a class="plat" href="https://open.spotify.com/show/4DfS8z9w2dg9NXvw4rAwvB" target="_blank" rel="noopener"><span class="ico">🟢</span><span>Spotify</span></a>
+      <a class="plat" href="https://music.163.com/#/radio?app_&id=1000684568" target="_blank" rel="noopener"><span class="ico">☁️</span><span>网易云音乐</span></a>
+      <a class="plat" href="https://www.ximalaya.com/album/89021839" target="_blank" rel="noopener"><span class="ico">🏔️</span><span>喜马拉雅</span></a>
     </div>
-    <div class="player-frame">
-      <iframe id="playerFrame" src="https://open.spotify.com/embed/show/4DfS8z9w2dg9NXvw4rAwvB?utm_source=generator&theme=0" height="352" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" title="播客播放器"></iframe>
-    </div>
-    <div class="player-note">
-      <span class="note-text">💡 播放器自动展示最新一集；国内的朋友直接戳这里 👉</span>
-      <a class="mini-btn" href="https://www.xiaoyuzhoufm.com/podcast/65bf412fa34d82a6cf7c3a6b" target="_blank" rel="noopener">🪐 去小宇宙收听 →</a>
+    <div class="clips-bar">
+      <p class="clips-text">✂️ B 站和 YouTube 上还有我们的整集和精彩切片 Clips，刷起来更上头！</p>
+      <div class="clips-btns">
+        <a href="https://youtube.com/@nevermindjustchill" target="_blank" rel="noopener">▶️ YouTube</a>
+        <a href="https://space.bilibili.com/3546695686163303" target="_blank" rel="noopener">📺 哔哩哔哩</a>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="sec-yellow" id="episodes">
+<section class="sec-yellow" id="listen">
+  <div class="wrap">
+    <h2 class="sec-title">🎧 最新一期，直接开听</h2>
+    <div class="player-tabs" role="tablist">
+      <button class="ptab active" data-player="xyz">🪐 小宇宙</button>
+      <button class="ptab" data-src="https://open.spotify.com/embed/show/4DfS8z9w2dg9NXvw4rAwvB?utm_source=generator&theme=0" data-h="352">Spotify</button>
+      <button class="ptab" id="appleTab" data-src="https://embed.podcasts.apple.com/cn/podcast/id1731772575" data-h="450">Apple Podcasts</button>
+    </div>
+    <div class="player-frame">
+      <div id="xyzPlayer"><div class="ep-loading">🪐 正在加载最新一集……</div></div>
+      <iframe id="playerFrame" height="352" hidden loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" title="播客播放器"></iframe>
+    </div>
+    <div class="player-after" id="xyzOpen">
+      <a class="mini-btn" id="xyzOpenLink" href="https://www.xiaoyuzhoufm.com/podcast/65bf412fa34d82a6cf7c3a6b" target="_blank" rel="noopener">🪐 在小宇宙打开这期 →</a>
+    </div>
+  </div>
+</section>
+
+<section class="sec-white" id="episodes">
   <div class="wrap">
     <h2 class="sec-title">📼 往期节目 & Show Notes</h2>
     <div class="ep-list" id="epList"><div class="ep-loading">📡 正在从电波里捞最新节目……</div></div>
@@ -413,7 +467,7 @@ footer p a{color:var(--yellow);opacity:.85;}
   </div>
 </section>
 
-<section class="sec-white" id="about">
+<section class="sec-yellow" id="about">
   <div class="wrap">
     <h2 class="sec-title">👋 关于我们</h2>
     <p class="about-intro">「无所谓开心就好」是一档由两位留学生拿铁和三无主播的生活闲聊类播客。<br>瞎聊大学生活，偶尔思考人生，反正每周都有点新鲜的。<br><b>无所谓，开心就好！</b></p>
@@ -430,7 +484,7 @@ footer p a{color:var(--yellow);opacity:.85;}
         <p>我很喜欢分享，比如和朋友煲电话粥或者发小红书。这也是为什么有这档播客的原因～</p>
       </div>
       <div class="host-card">
-        <div class="host-avatar">🧋</div>
+        <div class="host-avatar">🈚️</div>
         <h3>三无</h3>
         <span class="host-tag">主播 · Host</span>
         <p>Hiiii，我是三无！</p>
@@ -441,26 +495,6 @@ footer p a{color:var(--yellow);opacity:.85;}
         <p>我喜欢追剧，吃饭没剧看就不香了，要帅哥美女多的那种，但我受不了充斥令人脚趾抠地演技的无脑偶像剧。</p>
         <p>我喜欢 vibe code，因为我只会想不会码，看到想法落地的时候还是很美妙的。</p>
         <p>我喜欢讲故事，所以有了这档播客呀～</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="sec-yellow" id="platforms">
-  <div class="wrap">
-    <h2 class="sec-title">🚀 在这些地方找到我们</h2>
-    <div class="platforms">
-      <a class="plat" href="https://www.xiaoyuzhoufm.com/podcast/65bf412fa34d82a6cf7c3a6b" target="_blank" rel="noopener"><span class="ico">🪐</span><span>小宇宙</span></a>
-      <a class="plat" href="https://podcasts.apple.com/cn/podcast/id1731772575" target="_blank" rel="noopener"><span class="ico">🍎</span><span>Apple Podcasts</span></a>
-      <a class="plat" href="https://open.spotify.com/show/4DfS8z9w2dg9NXvw4rAwvB" target="_blank" rel="noopener"><span class="ico">🟢</span><span>Spotify</span></a>
-      <a class="plat" href="https://music.163.com/#/radio?app_&id=1000684568" target="_blank" rel="noopener"><span class="ico">☁️</span><span>网易云音乐</span></a>
-      <a class="plat" href="https://www.ximalaya.com/album/89021839" target="_blank" rel="noopener"><span class="ico">🏔️</span><span>喜马拉雅</span></a>
-    </div>
-    <div class="clips-bar">
-      <p class="clips-text">✂️ B 站和 YouTube 上还有我们的整集和精彩切片 Clips，刷起来更上头！</p>
-      <div class="clips-btns">
-        <a href="https://youtube.com/@nevermindjustchill" target="_blank" rel="noopener">▶️ YouTube</a>
-        <a href="https://space.bilibili.com/3546695686163303" target="_blank" rel="noopener">📺 哔哩哔哩</a>
       </div>
     </div>
   </div>
@@ -535,13 +569,25 @@ document.querySelectorAll('.sticker').forEach(s => {
 });
 
 /* ---------- 播放器切换 ---------- */
+/* 小宇宙 tab = 站内自制播放器（国内直连）；Spotify / Apple 的 iframe 点到才加载 */
 const frame = document.getElementById('playerFrame');
+const xyzBox = document.getElementById('xyzPlayer');
+const xyzOpen = document.getElementById('xyzOpen');
 document.querySelectorAll('.ptab').forEach(t => {
   t.addEventListener('click', () => {
     document.querySelectorAll('.ptab').forEach(x => x.classList.remove('active'));
     t.classList.add('active');
-    frame.src = t.dataset.src;
-    frame.height = t.dataset.h;
+    if (t.dataset.player === 'xyz') {
+      frame.hidden = true;
+      xyzBox.hidden = false;
+      xyzOpen.hidden = false;
+    } else {
+      xyzBox.hidden = true;
+      xyzOpen.hidden = true;
+      frame.hidden = false;
+      frame.height = t.dataset.h;
+      if (frame.getAttribute('src') !== t.dataset.src) frame.src = t.dataset.src;
+    }
   });
 });
 
@@ -563,7 +609,7 @@ const fallbackEpisodes = [
   { num: 'EP 69', title: '太正常的我不爱，雷点才是爽点', notes: null, link: XYZ_URL, date: '' }
 ];
 
-function parseEpisode(rawTitle, rawDescHTML, link, pubDate) {
+function parseEpisode(rawTitle, rawDescHTML, link, pubDate, audio, image) {
   // rss2json 返回的标题是 HTML 转义过的（如 &amp;），先解码
   const title = (new DOMParser().parseFromString(rawTitle || '', 'text/html').body.textContent || '').trim();
   let num = 'EP', name = title;
@@ -592,14 +638,14 @@ function parseEpisode(rawTitle, rawDescHTML, link, pubDate) {
   const date = d && !isNaN(d)
     ? d.getFullYear() + '.' + String(d.getMonth() + 1).padStart(2, '0') + '.' + String(d.getDate()).padStart(2, '0')
     : '';
-  return { num, title: name, notes, link: (link || XYZ_URL).split('?')[0], date };
+  return { num, title: name, notes, link: (link || XYZ_URL).split('?')[0], date, audio: audio || null, image: image || null };
 }
 
 async function fetchViaRss2json() {
   const r = await fetch('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(FEED_URL));
   const d = await r.json();
   if (d.status !== 'ok' || !d.items || !d.items.length) throw new Error('rss2json failed');
-  return d.items.slice(0, MAX_EPS).map(it => parseEpisode(it.title, it.description, it.link, it.pubDate));
+  return d.items.slice(0, MAX_EPS).map(it => parseEpisode(it.title, it.description, it.link, it.pubDate, it.enclosure && it.enclosure.link, it.thumbnail));
 }
 
 async function fetchViaProxy() {
@@ -611,7 +657,9 @@ async function fetchViaProxy() {
     it.querySelector('title')?.textContent,
     it.querySelector('description')?.textContent,
     it.querySelector('link')?.textContent,
-    it.querySelector('pubDate')?.textContent
+    it.querySelector('pubDate')?.textContent,
+    it.querySelector('enclosure')?.getAttribute('url'),
+    it.getElementsByTagName('itunes:image')[0]?.getAttribute('href')
   ));
 }
 
@@ -685,6 +733,52 @@ function renderEpisodes(eps, isLive) {
   }
 }
 
+/* ---------- 小宇宙站内播放器：用 RSS 里的音频直链，国内可直接播放 ---------- */
+function renderXyzPlayer(ep) {
+  xyzBox.innerHTML = '';
+  const wrap = document.createElement('div');
+  wrap.className = 'xyz-player';
+
+  const top = document.createElement('div');
+  top.className = 'xyz-top';
+  const img = document.createElement('img');
+  img.src = ep.image || 'assets/cover.png';
+  img.alt = '本期封面';
+  img.onerror = () => { img.onerror = null; img.src = 'assets/cover.png'; };
+  const info = document.createElement('div');
+  const titleEl = document.createElement('div');
+  titleEl.className = 'xyz-eptitle';
+  titleEl.textContent = ep.num + '｜' + ep.title;
+  const dateEl = document.createElement('div');
+  dateEl.className = 'xyz-date';
+  dateEl.textContent = ep.date ? ep.date + ' · 最新一期' : '最新一期';
+  info.append(titleEl, dateEl);
+  top.append(img, info);
+  wrap.appendChild(top);
+
+  if (ep.audio) {
+    const au = document.createElement('audio');
+    au.controls = true;
+    au.preload = 'none';
+    // 只留倍速调节，去掉浏览器菜单里的“下载”
+    au.setAttribute('controlsList', 'nodownload');
+    au.addEventListener('contextmenu', e => e.preventDefault());
+    au.src = ep.audio;
+    wrap.appendChild(au);
+  }
+
+  xyzBox.appendChild(wrap);
+  document.getElementById('xyzOpenLink').href = ep.link || XYZ_URL;
+}
+
+function renderXyzFallback() {
+  xyzBox.innerHTML = '';
+  const box = document.createElement('div');
+  box.className = 'xyz-fallback';
+  box.textContent = '😵 最新一集没加载出来，戳下面的按钮去小宇宙直接听吧';
+  xyzBox.appendChild(box);
+}
+
 /* ---------- Apple 播放器：自动锁定最新一集 ---------- */
 (async () => {
   try {
@@ -703,20 +797,26 @@ function renderEpisodes(eps, isLive) {
 })();
 
 (async () => {
-  const CACHE_KEY = 'nvm_episodes_v1';
+  const CACHE_KEY = 'nvm_episodes_v2';
   let eps = null;
   try { eps = await fetchViaRss2json(); }
   catch (e1) { try { eps = await fetchViaProxy(); } catch (e2) {} }
 
   if (eps) {
     renderEpisodes(eps, true);
+    renderXyzPlayer(eps[0]);
     try { localStorage.setItem(CACHE_KEY, JSON.stringify(eps)); } catch (e) {}
   } else {
     // 两条线路都失败：先用上次成功抓到的缓存，再不行才用内置备用列表
     let cached = null;
     try { cached = JSON.parse(localStorage.getItem(CACHE_KEY)); } catch (e) {}
-    if (cached && cached.length) renderEpisodes(cached, true);
-    else renderEpisodes(fallbackEpisodes, false);
+    if (cached && cached.length) {
+      renderEpisodes(cached, true);
+      renderXyzPlayer(cached[0]);
+    } else {
+      renderEpisodes(fallbackEpisodes, false);
+      renderXyzFallback();
+    }
   }
 })();
 </script>
