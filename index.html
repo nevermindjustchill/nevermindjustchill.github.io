@@ -592,11 +592,10 @@ document.querySelectorAll('.ptab').forEach(t => {
 });
 
 /* ==========================================================
-   往期节目：自动从官方 RSS 抓取（无需手动更新）
-   RSS 源 = 小宇宙官方 feed，节目一更新这里就自动跟着更新。
-   线路 1：rss2json（转成 JSON，最新 10 集）
-   线路 2：allorigins 代理直读 XML
-   两条线路都挂了 → 显示内置的备用列表
+   往期节目 + 小宇宙播放器：自动抓取最新一集（无需手动更新）
+   线路 1：Apple iTunes 接口（跨域稳定、永远最新，音频仍走小宇宙 CDN）
+   线路 2：allorigins 代理直读小宇宙 RSS（带每集小宇宙深链，作为兜底）
+   两条线路都挂了 → 用上次缓存，再不行才显示内置的备用列表
    ========================================================== */
 const FEED_URL = 'https://feed.xyzfm.space/ckayfxcrmfak';
 const XYZ_URL = 'https://www.xiaoyuzhoufm.com/podcast/65bf412fa34d82a6cf7c3a6b';
@@ -610,7 +609,7 @@ const fallbackEpisodes = [
 ];
 
 function parseEpisode(rawTitle, rawDescHTML, link, pubDate, audio, image) {
-  // rss2json 返回的标题是 HTML 转义过的（如 &amp;），先解码
+  // RSS 返回的标题是 HTML 转义过的（如 &amp;），先解码
   const title = (new DOMParser().parseFromString(rawTitle || '', 'text/html').body.textContent || '').trim();
   let num = 'EP', name = title;
   const m = title.match(/^(EP[^｜|]*?)\s*[｜|]\s*(.+)$/i);
@@ -641,11 +640,38 @@ function parseEpisode(rawTitle, rawDescHTML, link, pubDate, audio, image) {
   return { num, title: name, notes, link: (link || XYZ_URL).split('?')[0], date, audio: audio || null, image: image || null };
 }
 
-async function fetchViaRss2json() {
-  const r = await fetch('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(FEED_URL));
+/* 线路 1：Apple iTunes 接口（支持跨域、稳定、永远跟着最新一集，音频仍是小宇宙 CDN 国内直连） */
+const ITUNES_ID = '1731772575';
+function parseItunesEpisode(x) {
+  const title = (x.trackName || '').trim();
+  let num = 'EP', name = title;
+  const m = title.match(/^(EP[^｜|]*?)\s*[｜|]\s*(.+)$/i);
+  if (m) { num = m[1].trim(); name = m[2].trim(); }
+
+  // 去掉每集末尾固定的“本档播客可以在……”宣传文案和“在小宇宙查看”
+  let text = x.description || '';
+  for (const marker of ['————', '本档播客可以在']) {
+    const i = text.indexOf(marker);
+    if (i > -1) text = text.slice(0, i);
+  }
+  const notes = text.split(/\r?\n/)
+    .map(l => l.trim().replace(/^\*\s*/, '• '))
+    .filter(l => l && !l.includes('在小宇宙查看'))
+    .join('\n') || null;
+
+  const d = x.releaseDate ? new Date(x.releaseDate) : null;
+  const date = d && !isNaN(d)
+    ? d.getFullYear() + '.' + String(d.getMonth() + 1).padStart(2, '0') + '.' + String(d.getDate()).padStart(2, '0')
+    : '';
+  return { num, title: name, notes, link: XYZ_URL, date, audio: x.episodeUrl || null, image: x.artworkUrl600 || x.artworkUrl160 || null };
+}
+
+async function fetchViaItunes() {
+  const r = await fetch('https://itunes.apple.com/lookup?id=' + ITUNES_ID + '&entity=podcastEpisode&limit=' + (MAX_EPS + 1) + '&sort=recent');
   const d = await r.json();
-  if (d.status !== 'ok' || !d.items || !d.items.length) throw new Error('rss2json failed');
-  return d.items.slice(0, MAX_EPS).map(it => parseEpisode(it.title, it.description, it.link, it.pubDate, it.enclosure && it.enclosure.link, it.thumbnail));
+  const eps = (d.results || []).filter(x => x.kind === 'podcast-episode').slice(0, MAX_EPS).map(parseItunesEpisode);
+  if (!eps.length) throw new Error('itunes empty');
+  return eps;
 }
 
 async function fetchViaProxy() {
@@ -799,7 +825,7 @@ function renderXyzFallback() {
 (async () => {
   const CACHE_KEY = 'nvm_episodes_v2';
   let eps = null;
-  try { eps = await fetchViaRss2json(); }
+  try { eps = await fetchViaItunes(); }
   catch (e1) { try { eps = await fetchViaProxy(); } catch (e2) {} }
 
   if (eps) {
